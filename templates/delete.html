@@ -1,0 +1,18 @@
+{% extends 'main.html' %}
+
+{% block title %} Usuń projekt {% endblock %}
+
+{% block content %}
+<div class="col-4 p-0 px-4 panel-left">
+    <form method="POST">
+        {% csrf_token %}
+        <h2>Czy napewno chesz usunąć projekt "{{project.title}}" ?</h2>
+
+            <button type="submit" class="btn btn-outline-danger btn-lg">Tak</button>
+            <a href="{% url 'index' %}" class="btn btn-outline-primary me-2 btn-lg">Nie</a>
+
+    </form>
+
+</div>
+
+{% endblock %}

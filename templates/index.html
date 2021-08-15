@@ -1,0 +1,59 @@
+{% extends 'main.html' %}
+
+{% block title %} Lista projektów{% endblock %}
+
+{% block content %}
+
+    <div class="panel">
+        <div class="row">
+            <div class="col-3 p-0 px-4 panel-left">
+
+                <h3>Lista projektów:</h3>
+                {% for project in projects_names %}
+                    {% if project.links_ok%}
+                        <a href="{% url 'load_project' project.id %}" class="btn "> <h3>{{ forloop.counter }}. {{project.title}} <i class="far fa-check-circle" style="color:green"></i></h3></a><br>
+                    {% else %}
+                         <a href="{% url 'load_project' project.id %}" class="btn "> <h3>{{ forloop.counter }}. {{project.title}} <i class="far fa-times-circle" style="color:red"></i></h3></a><br>
+                    {% endif %}
+                {% empty %}
+                     <h3>Brak projektó w bazie danych</h3>
+                {% endfor %}
+
+            </div>
+            <div class="col-5 p-0 panel-mid">
+                  <h2>Lista url:</h2>
+                {% for url in project_urls %}
+                    {% if url.links_ok %}
+                        <h3>{{ forloop.counter }}. {{url.urls}} <i class="far fa-check-circle" style="color:green"></i></h3>
+                    {% else %}
+                        <h3>{{ forloop.counter }}. {{url.urls}} <i class="far fa-times-circle" style="color:red"></i></h3>
+                    {% endif %}
+                {% empty %}
+                     <h3>Brak linków dla projektu</h3>
+                {% endfor %}
+
+                <a href="{% url 'update_project' selected_id %}" class="btn btn-outline-primary me-2 btn-lg">Edytuj projekt</a>
+                <a href="{% url 'delete_project' selected_id %}" class="btn btn-outline-danger me-2 btn-lg">Usuń projekt</a>
+                <br>
+
+            </div>
+
+            <div class="col-3 p-0 panel-right">
+                <h4>Data ostatniej aktualizacji: </h4>
+                <h4>{{ update_time.time_of_update }}</h4>
+                <a href="{% url 'check_url' %}" class="btn btn-outline-primary me-2 btn-lg">Aktualizuj</a>
+            </div>
+
+        </div>
+    </div>
+
+
+{% endblock %}
+
+
+<!--                <h2>Lista projektów:</h2>-->
+<!--                {% for project in projects_names %}-->
+<!--                    <h3>{{project.title}} - {{project.links_ok}}</h3>-->
+<!--                {% empty %}-->
+<!--                     <h3>Brak projektó w bazie danych</h3>-->
+<!--                {% endfor %}-->
