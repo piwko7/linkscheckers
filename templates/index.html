@@ -40,7 +40,11 @@
 
             <div class="col-3 p-0 panel-right">
                 <h4>Data ostatniej aktualizacji: </h4>
-                <h4>{{ update_time.time_of_update }}</h4>
+                {% if update_time %}
+                    <h4>{{ update_time.time_of_update }}</h4>
+                {% else %}
+                    <h4>Brak danych</h4>
+                {% endif %}
                 <a href="{% url 'check_url' %}" class="btn btn-outline-primary me-2 btn-lg">Aktualizuj</a>
             </div>
 

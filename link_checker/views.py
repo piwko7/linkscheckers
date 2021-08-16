@@ -25,7 +25,7 @@ def index(request):
             update_time = all_dates[0]
             print(update_time)
         except:
-            update_time = 'Brak'
+            update_time = None
     else:
         projects_names = []
         first_project_id = 0
