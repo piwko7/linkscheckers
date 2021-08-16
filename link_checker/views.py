@@ -20,9 +20,12 @@ def index(request):
         project_urls = projects_name.related_urls.all()
         projects_names = list(Project.objects.all())
 
-        all_dates = Date.objects.all()
-        update_time = all_dates[0]
-        print(update_time)
+        try:
+            all_dates = Date.objects.all()
+            update_time = all_dates[0]
+            print(update_time)
+        except:
+            update_time = 'Brak'
     else:
         projects_names = []
         first_project_id = 0
