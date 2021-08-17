@@ -1,1 +1,1 @@
-web: gunicorn neutrino.wsgi.py --log-file -
+web: gunicorn neutrino.wsgi --log-file -
