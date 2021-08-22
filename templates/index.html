@@ -16,7 +16,7 @@
                          <a href="{% url 'load_project' project.id %}" class="btn "> <h3>{{ forloop.counter }}. {{project.title}} <i class="far fa-times-circle" style="color:red"></i></h3></a><br>
                     {% endif %}
                 {% empty %}
-                     <h3>Brak projektó w bazie danych</h3>
+                     <h3>Brak projektów bazie danych</h3>
                 {% endfor %}
 
             </div>

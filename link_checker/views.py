@@ -29,6 +29,7 @@ def index(request):
     else:
         projects_names = []
         first_project_id = 0
+        update_time = None
 
     return render(request, 'index.html', {'projects_names': projects_names, 'project_urls': project_urls, 'selected_id': first_project_id, 'update_time': update_time})
 
