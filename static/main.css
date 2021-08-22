@@ -1,0 +1,23 @@
+body {
+    font-family: 'Roboto', sans-serif;
+}
+
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+
+    font-size: 72.5%;
+    scroll-behavior: smooth;
+}
+
+container-fluid {
+    font-size: 172.5%;
+}
+
+.form-group {
+    font-size: 1.8rem;
+}
