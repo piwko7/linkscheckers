@@ -1,4 +1,4 @@
-from datetime import time, datetime
+from datetime import time, datetime, timedelta
 
 from django.shortcuts import render, get_object_or_404, redirect
 from .models import Project, URL, Date
@@ -108,10 +108,10 @@ def check_url(request):
             print("tu jestem")
             print(all_dates)
             date_time = all_dates[0]
-            date_time.time_of_update = datetime.now()
+            date_time.time_of_update = datetime.now() + timedelta(hours=2)
             date_time.save()
         except:
-            date_time = Date.objects.create(time_of_update=datetime.now())
+            date_time = Date.objects.create(time_of_update=datetime.now()+ timedelta(hours=2))
             date_time.save()
 
     return redirect(index)
