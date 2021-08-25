@@ -44,7 +44,13 @@ def load_project(request, id):
     all_projects = list(Project.objects.all().values_list('id', flat=True))
     selected_project = all_projects.index(id) + 1
 
-    return render(request, 'index.html', {'projects_names': projects_names, 'project_urls': project_urls, 'selected_id': id, 'selected_project': selected_project})
+    try:
+        all_dates = Date.objects.all()
+        update_time = all_dates[0]
+    except:
+        update_time = None
+
+    return render(request, 'index.html', {'projects_names': projects_names, 'project_urls': project_urls, 'selected_id': id, 'selected_project': selected_project, 'update_time': update_time})
 
 def delete_project(request, id):
     project = get_object_or_404(Project, pk=id)
