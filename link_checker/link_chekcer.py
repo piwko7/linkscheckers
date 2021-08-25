@@ -16,4 +16,4 @@ def check_link(project_name, project_urls):
         if single_url in urls_on_site:
             print('To chyba dziala')
 
-check_link('https://www.devilpage.pl/', ['http://www.mufsc.pl', 'http://ww.google.pl'])
+check_link('https://www.wykop.pl/', ['http://www.musc.pl', 'http://ww.google.pl'])

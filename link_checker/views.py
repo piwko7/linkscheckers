@@ -15,10 +15,13 @@ def index(request):
     all_projects = Project.objects.all().values_list()
     check_list = all_projects.exists()
     if all_projects:
+        print(len(all_projects))
         first_project_id = all_projects[0][0]
+        test = first_project_id - len(all_projects) + 3
         projects_name = Project.objects.get(id=first_project_id) #choose first item from list
         project_urls = projects_name.related_urls.all()
         projects_names = list(Project.objects.all())
+        selected_project = 1
 
         try:
             all_dates = Date.objects.all()
@@ -31,14 +34,19 @@ def index(request):
         first_project_id = 0
         update_time = None
 
-    return render(request, 'index.html', {'projects_names': projects_names, 'project_urls': project_urls, 'selected_id': first_project_id, 'update_time': update_time})
+    return render(request, 'index.html', {'projects_names': projects_names, 'project_urls': project_urls, 'selected_id': first_project_id, 'selected_project': selected_project, 'update_time': update_time})
 
 def load_project(request, id):
     projects_name = Project.objects.get(id=id) #choose selected project from list
     project_urls = projects_name.related_urls.all()
     projects_names = list(Project.objects.all())
 
-    return render(request, 'index.html', {'projects_names': projects_names, 'project_urls': project_urls, 'selected_id': id})
+    # find selected id from HTML
+    all_projects = list(Project.objects.all().values_list('id', flat=True))
+    selected_project = all_projects.index(id) + 1
+    print(selected_project)
+
+    return render(request, 'index.html', {'projects_names': projects_names, 'project_urls': project_urls, 'selected_id': id, 'selected_project': selected_project})
 
 def delete_project(request, id):
     project = get_object_or_404(Project, pk=id)
@@ -73,46 +81,45 @@ def check_url(request):
     if all_projects:
 
         for project in all_projects:
-            project_urls = project.related_urls.all().values_list('id', 'urls') # pobranie powiązanych linków
-            reqs = requests.get(project.title)
-            soup = BeautifulSoup(reqs.text, 'html.parser') # parsowanie linków na stronie
+            try:
 
+                project_urls = project.related_urls.all().values_list('id', 'urls')  #dowlnoad relateds links
+                reqs = requests.get(project.title)
+                soup = BeautifulSoup(reqs.text, 'html.parser') #prasing links on site
 
-            # stworzenie listy z linków stronie
-            urls_on_site = []
-            for link in soup.find_all('a'):
-                urls_on_site.append(link.get('href'))
+                # create list from links on site
+                urls_on_site = []
+                for link in soup.find_all('a'):
+                    urls_on_site.append(link.get('href'))
 
-            #sprawdzenie czy urls sa w projekcie
+                #check urls on site
+                links_on_site = []
+                for single_url in project_urls:
+                    if single_url[1] in urls_on_site:
+                       url_to_update = URL.objects.get(id=single_url[0])
+                       url_to_update.links_ok = True
+                       url_to_update.save()
+                       links_on_site.append(True)
+                    else:
+                        url_to_update = URL.objects.get(id=single_url[0])
+                        url_to_update.links_ok = False
+                        url_to_update.save()
+                        links_on_site.append(False)
 
-            links_on_site = []
-            for single_url in project_urls:
-                if single_url[1] in urls_on_site:
-                   url_to_update = URL.objects.get(id=single_url[0])
-                   url_to_update.links_ok = True
-                   url_to_update.save()
-                   links_on_site.append(True)
-                else:
-                    url_to_update = URL.objects.get(id=single_url[0])
-                    url_to_update.links_ok = False
-                    url_to_update.save()
-                    links_on_site.append(False)
-
-            all_links_ok = all(links_on_site)
-            project.links_ok = all_links_ok
-            project.save()
-
-        try:
-            #dac warunek ze jesli jest cos w bazie danych !!!
-            all_dates = Date.objects.all()
-            print("tu jestem")
-            print(all_dates)
-            date_time = all_dates[0]
-            date_time.time_of_update = datetime.now() + timedelta(hours=2)
-            date_time.save()
-        except:
-            date_time = Date.objects.create(time_of_update=datetime.now()+ timedelta(hours=2))
-            date_time.save()
+                all_links_ok = all(links_on_site)
+                project.links_ok = all_links_ok
+                project.save()
+            except:
+                # except if project name is wrong
+                pass
+            try:
+                all_dates = Date.objects.all()
+                date_time = all_dates[0]
+                date_time.time_of_update = datetime.now() + timedelta(hours=2)
+                date_time.save()
+            except:
+                date_time = Date.objects.create(time_of_update=datetime.now()+ timedelta(hours=2))
+                date_time.save()
 
     return redirect(index)
 

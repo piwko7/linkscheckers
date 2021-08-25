@@ -2,6 +2,7 @@
 
 {% block title %} Lista projektów{% endblock %}
 
+
 {% block content %}
 
     <div class="panel">
@@ -10,13 +11,22 @@
 
                 <h3>Lista projektów:</h3>
                 {% for project in projects_names %}
-                    {% if project.links_ok%}
-                        <a href="{% url 'load_project' project.id %}" class="btn "> <h3>{{ forloop.counter }}. {{project.title}} <i class="far fa-check-circle" style="color:green"></i></h3></a><br>
+
+                    {% if forloop.counter is selected_project %}
+                        {% if project.links_ok%}
+                                <a href="{% url 'load_project' project.id %}" class="btn" style="text-decoration: underline"> <h3>{{ forloop.counter }}. {{project.title}} <i class="far fa-check-circle" style="color:green"></i></h3></a><br>
+                            {% else %}
+                                 <a href="{% url 'load_project' project.id %}" class="btn" style="text-decoration: underline"> <h3>{{ forloop.counter }}. {{project.title}} <i class="far fa-times-circle" style="color:red"></i></h3></a><br>
+                            {% endif %}
                     {% else %}
-                         <a href="{% url 'load_project' project.id %}" class="btn "> <h3>{{ forloop.counter }}. {{project.title}} <i class="far fa-times-circle" style="color:red"></i></h3></a><br>
+                            {% if project.links_ok%}
+                                <a href="{% url 'load_project' project.id %}" class="btn" style="color:black"> <h3>{{ forloop.counter }}. {{project.title}} <i class="far fa-check-circle" style="color:green"></i></h3></a><br>
+                            {% else %}
+                                 <a href="{% url 'load_project' project.id %}" class="btn" style="color:black"> <h3>{{ forloop.counter }}. {{project.title}} <i class="far fa-times-circle" style="color:red"></i></h3></a><br>
+                            {% endif %}
                     {% endif %}
                 {% empty %}
-                     <h3>Brak projektów bazie danych</h3>
+                    <h3>Brak projektów bazie danych</h3>
                 {% endfor %}
 
             </div>
@@ -53,11 +63,3 @@
 
 
 {% endblock %}
-
-
-<!--                <h2>Lista projektów:</h2>-->
-<!--                {% for project in projects_names %}-->
-<!--                    <h3>{{project.title}} - {{project.links_ok}}</h3>-->
-<!--                {% empty %}-->
-<!--                     <h3>Brak projektó w bazie danych</h3>-->
-<!--                {% endfor %}-->
