@@ -31,6 +31,7 @@ def index(request):
         projects_names = []
         first_project_id = 0
         update_time = None
+        selected_project = None
 
     return render(request, 'index.html', {'projects_names': projects_names, 'project_urls': project_urls, 'selected_id': first_project_id, 'selected_project': selected_project, 'update_time': update_time})
 
