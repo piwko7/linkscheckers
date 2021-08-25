@@ -15,7 +15,6 @@ def index(request):
     all_projects = Project.objects.all().values_list()
     check_list = all_projects.exists()
     if all_projects:
-        print(len(all_projects))
         first_project_id = all_projects[0][0]
         test = first_project_id - len(all_projects) + 3
         projects_name = Project.objects.get(id=first_project_id) #choose first item from list
@@ -26,7 +25,6 @@ def index(request):
         try:
             all_dates = Date.objects.all()
             update_time = all_dates[0]
-            print(update_time)
         except:
             update_time = None
     else:
@@ -44,7 +42,6 @@ def load_project(request, id):
     # find selected id from HTML
     all_projects = list(Project.objects.all().values_list('id', flat=True))
     selected_project = all_projects.index(id) + 1
-    print(selected_project)
 
     return render(request, 'index.html', {'projects_names': projects_names, 'project_urls': project_urls, 'selected_id': id, 'selected_project': selected_project})
 
