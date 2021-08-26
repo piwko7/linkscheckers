@@ -14,6 +14,7 @@ class ProjectForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.parsed_urls = set()
         # self.instance
+
     def clean_urls(self):
         data = self.cleaned_data['urls']
         self.parsed_urls =  set(data.split())
@@ -21,9 +22,18 @@ class ProjectForm(forms.ModelForm):
             raise ValidationError("Musi byc chociaż 1 link")
         return data
 
+    def clean_title(self):
+        data = self.cleaned_data['title']
+        if data[-1] == '/': # check that last sing in url is '/'
+            title = data[:-1]
+            return title
+        else:
+            return data
+
     def save(self, commit=False):
         # obiekt typu Project
         with transaction.atomic():
+
             if self.instance.id:
                 self._create()
             else:
