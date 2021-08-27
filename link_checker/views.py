@@ -90,7 +90,6 @@ def check_url(request):
                 links_on_site = [] #check urls on site
                 for single_url in project_urls:
                     reqs = requests.get(single_url[1])
-                    time.sleep(3)
                     soup = BeautifulSoup(reqs.text, 'html.parser') #prasing links on site
 
                     # create list from links on site
