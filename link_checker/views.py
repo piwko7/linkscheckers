@@ -126,5 +126,5 @@ def check_url(request):
                 date_time = Date.objects.create(time_of_update=datetime.now()+ timedelta(hours=2))
                 date_time.save()
 
-    return redirect(index)
+        return redirect(index)
 
