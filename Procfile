@@ -1,1 +1,1 @@
-web: gunicorn neutrino.wsgi --log-file -
+web: gunicorn neutrino.wsgi --timeout 100 --log-file -
