@@ -1,1 +1,1 @@
-web: gunicorn neutrino.wsgi --log-file -t 100
+web: gunicorn neutrino.wsgi -t 100 --log-file
